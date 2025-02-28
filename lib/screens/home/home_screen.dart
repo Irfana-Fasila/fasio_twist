@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shop_app/screens/home/components/categories/category_section.dart';
+import 'package:shop_app/screens/home/components/offers/offer_screen.dart';
+import 'package:shop_app/screens/home/components/profile/profile_screen.dart';
 
 import '../../models/product.dart';
 import '../details/details_screen.dart';
-import 'components/categories.dart';
+import 'components/categories/categories.dart';
 import 'components/item_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -32,14 +35,16 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: SvgPicture.asset(
               "assets/icons/search.svg",
-              colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+              colorFilter:
+                  const ColorFilter.mode(Colors.black, BlendMode.srcIn),
             ),
             onPressed: () {},
           ),
           IconButton(
             icon: SvgPicture.asset(
               "assets/icons/cart.svg",
-              colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+              colorFilter:
+                  const ColorFilter.mode(Colors.black, BlendMode.srcIn),
             ),
             onPressed: () {},
           ),
@@ -50,10 +55,14 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0), // Replaced kDefaultPaddin
+            padding: const EdgeInsets.symmetric(
+                horizontal: 16.0), // Replaced kDefaultPaddin
             child: Text(
               "Fasio Twist",
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(fontWeight: FontWeight.bold),
             ),
           ),
           Categories(
@@ -113,14 +122,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   /// Placeholder screens for other categories
   Widget _buildCategoryScreen() {
-    return const Center(child: Text("Categories Screen", style: TextStyle(fontSize: 20)));
+    return const CategoriesPage();
   }
 
   Widget _buildOffersScreen() {
-    return const Center(child: Text("Offers Screen", style: TextStyle(fontSize: 20)));
+    return const OffersPage();
   }
 
   Widget _buildAccountScreen() {
-    return const Center(child: Text("Account Screen", style: TextStyle(fontSize: 20)));
+    return const ProfileScreen();
   }
 }
