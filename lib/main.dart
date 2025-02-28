@@ -73,9 +73,7 @@ class _AuthScreenState extends State<AuthScreen>
     if (_formKey.currentState!.validate()) {
       Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(),
-        ),
+        MaterialPageRoute(builder: (context) => HomeScreen()),
       );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
