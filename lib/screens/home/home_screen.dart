@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../constants.dart';
 
 import '../../models/product.dart';
 import '../details/details_screen.dart';
-import 'components/categorries.dart';
+import 'components/categories.dart';
 import 'components/item_card.dart';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
