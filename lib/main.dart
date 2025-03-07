@@ -4,7 +4,10 @@ import 'dart:ui';
 import 'package:fasio_twist/screens/home/home_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(ShoppingApp());
+
+  
 }
 
 class ShoppingApp extends StatelessWidget {
@@ -174,7 +177,8 @@ class _AuthScreenState extends State<AuthScreen>
                           child: Icon(
                             Icons.shopping_bag_rounded,
                             size: 60,
-                            color: Color.from(alpha: 1, red: 0.961, green: 0.482, blue: 0.8),
+                            color: Color.from(
+                                alpha: 1, red: 0.961, green: 0.482, blue: 0.8),
                           ),
                         ),
                       ),
@@ -189,10 +193,12 @@ class _AuthScreenState extends State<AuthScreen>
                           child: Container(
                             padding: EdgeInsets.all(28),
                             decoration: BoxDecoration(
-                              color: const Color.fromRGBO(234, 145, 145, 1).withOpacity(0.1),
+                              color: const Color.fromRGBO(234, 145, 145, 1)
+                                  .withOpacity(0.1),
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(
-                                color: const Color.fromRGBO(238, 160, 160, 1).withOpacity(0.2),
+                                color: const Color.fromRGBO(238, 160, 160, 1)
+                                    .withOpacity(0.2),
                                 width: 1.5,
                               ),
                             ),
@@ -348,8 +354,9 @@ class _AuthScreenState extends State<AuthScreen>
                                       ),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Color.fromRGBO(210, 195, 232, 1)
-                                              .withOpacity(0.3),
+                                          color:
+                                              Color.fromRGBO(210, 195, 232, 1)
+                                                  .withOpacity(0.3),
                                           blurRadius: 8,
                                           offset: Offset(0, 4),
                                         ),
@@ -397,7 +404,8 @@ class _AuthScreenState extends State<AuthScreen>
                             _isLogin
                                 ? "Don't have an account? "
                                 : "Already have an account? ",
-                            style: TextStyle(color: const Color.fromARGB(179, 9, 14, 23)),
+                            style: TextStyle(
+                                color: const Color.fromARGB(179, 9, 14, 23)),
                           ),
                           GestureDetector(
                             onTap: _toggleMode,
