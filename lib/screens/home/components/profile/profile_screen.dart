@@ -100,7 +100,7 @@ class ProfileScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          "Age: ${ref.watch(authVM).email}",
+                          ref.watch(authVM).email,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
@@ -108,7 +108,7 @@ class ProfileScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          ref.watch(authVM).age,
+                          "Age : ${ref.watch(authVM).age}",
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
