@@ -11,6 +11,7 @@ class SignUpScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final TextEditingController nameController = TextEditingController();
+    final TextEditingController ageController = TextEditingController();
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
     final formKey = GlobalKey<FormState>();
@@ -21,6 +22,7 @@ class SignUpScreen extends ConsumerWidget {
           name: nameController.text,
           email: emailController.text,
           password: passwordController.text,
+          age: ageController.text,
         );
 
         bool success = await ref.read(authVM).signUp(signupModel);
@@ -213,6 +215,54 @@ class SignUpScreen extends ConsumerWidget {
                                   },
                                 ),
 
+                                const SizedBox(height: 20),
+                                TextFormField(
+                                  controller: ageController,
+                                  style: const TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                    labelText: 'Age',
+                                    labelStyle: const TextStyle(color: Colors.white70),
+                                    prefixIcon: const Icon(Icons.numbers, color: Colors.white70),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                      borderSide: const BorderSide(color: Colors.white30),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                      borderSide: const BorderSide(color: Colors.white, width: 2),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                      borderSide: const BorderSide(color: Colors.redAccent, width: 1),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                      borderSide: const BorderSide(color: Colors.redAccent, width: 2),
+                                    ),
+                                    errorStyle: const TextStyle(color: Colors.redAccent),
+                                  ),
+                                  keyboardType: TextInputType.number, // Added to ensure numeric input
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter your age';
+                                    }
+                                    // Convert string to integer for validation
+                                    final age = int.tryParse(value);
+                                    if (age == null) {
+                                      return 'Please enter a valid number';
+                                    }
+                                    if (age < 0) {
+                                      return 'Age cannot be negative';
+                                    }
+                                    if (age < 13) {
+                                      return 'You must be at least 13 years old';
+                                    }
+                                    if (age > 120) {
+                                      return 'Please enter a realistic age';
+                                    }
+                                    return null;
+                                  },
+                                ),
                                 const SizedBox(height: 20),
 
                                 // Email field

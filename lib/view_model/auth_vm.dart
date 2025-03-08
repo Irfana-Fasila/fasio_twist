@@ -20,16 +20,23 @@ class LoginModel {
 // Signup Model
 class SignupModel {
   final String name;
+  final String age; // Already present
   final String email;
   final String password;
 
   SignupModel({
     required this.name,
+    required this.age,
     required this.email,
     required this.password,
   });
 
-  Map<String, dynamic> toJson() => {'name': name, 'email': email, 'password': password};
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'age': age, // Add age to JSON output
+        'email': email,
+        'password': password
+      };
 }
 
 final authVM = ChangeNotifierProvider<AuthVM>((ref) => AuthVM());
@@ -38,6 +45,7 @@ class AuthVM extends ChangeNotifier {
   String? token;
   String? userEmail;
   String? userName;
+  String? userAge; // Added age property
   final Dio dio = Dio();
   bool isLoading = true;
 
@@ -53,6 +61,7 @@ class AuthVM extends ChangeNotifier {
       token = data['token'];
       userEmail = data['email'];
       userName = data['name'];
+      userAge = data['age']; // Load age from storage
     }
     isLoading = false;
     notifyListeners();
@@ -70,13 +79,14 @@ class AuthVM extends ChangeNotifier {
       if (response.statusCode == 200 && response.data['token'] != null) {
         token = response.data['token'];
         userEmail = loginModel.email;
-        // Assuming the API returns the name in the response, if not, it will be null
-        userName = response.data['name'];
+        userName = response.data['name']; // From API response if available
+        userAge = response.data['age']; // From API response if available
 
         await HiveDB.toDb('authBox', 'userData', {
           'token': token,
           'email': userEmail,
           'name': userName,
+          'age': userAge,
         });
         notifyListeners();
         print("Login Success: $response");
@@ -105,11 +115,13 @@ class AuthVM extends ChangeNotifier {
         token = response.data['token'];
         userEmail = signupModel.email;
         userName = signupModel.name;
+        userAge = signupModel.age; 
 
         await HiveDB.toDb('authBox', 'userData', {
           'token': token,
           'email': userEmail,
           'name': userName,
+          'age': userAge,
         });
         notifyListeners();
         return true;
@@ -129,10 +141,12 @@ class AuthVM extends ChangeNotifier {
     token = null;
     userEmail = null;
     userName = null;
+    userAge = null; // Clear age on logout
     notifyListeners();
   }
 
   // Getters for UI access
   String get email => userEmail ?? '';
   String get name => userName ?? '';
+  String get age => userAge ?? ''; // Added age getter
 }

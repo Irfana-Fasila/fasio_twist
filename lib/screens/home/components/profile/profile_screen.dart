@@ -65,7 +65,7 @@ class ProfileScreen extends ConsumerWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 200.0,
+            expandedHeight: 210.0,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
@@ -100,7 +100,15 @@ class ProfileScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          ref.watch(authVM).email,
+                          "Age: ${ref.watch(authVM).email}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          ref.watch(authVM).age,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
