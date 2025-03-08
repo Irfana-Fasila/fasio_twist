@@ -21,7 +21,7 @@ class LoginModel {
 // Signup Model
 class SignupModel {
   final String name;
-  final String age; // Already present
+  final String age;
   final String email;
   final String password;
 
@@ -32,12 +32,7 @@ class SignupModel {
     required this.password,
   });
 
-  Map<String, dynamic> toJson() => {
-        'name': name,
-        'age': age, // Add age to JSON output
-        'email': email,
-        'password': password
-      };
+  Map<String, dynamic> toJson() => {'name': name, 'age': age, 'email': email, 'password': password};
 }
 
 final authVM = ChangeNotifierProvider<AuthVM>((ref) => AuthVM());
@@ -46,7 +41,7 @@ class AuthVM extends ChangeNotifier {
   String? token;
   String? userEmail;
   String? userName;
-  String? userAge; // Added age property
+  String? userAge;
   final Dio dio = Dio();
   bool isLoading = true;
 
@@ -62,7 +57,7 @@ class AuthVM extends ChangeNotifier {
       token = data['token'];
       userEmail = data['email'];
       userName = data['name'];
-      userAge = data['age']; // Load age from storage
+      userAge = data['age'];
     }
     isLoading = false;
     notifyListeners();
@@ -71,7 +66,7 @@ class AuthVM extends ChangeNotifier {
   Future<bool> login(LoginModel loginModel) async {
     try {
       dio.options.headers = {'Content-Type': 'application/json'};
-
+      logX("Requesting: ${ApiEndpoints.login}");
       final response = await dio.post(
         ApiEndpoints.login,
         data: loginModel.toJson(),
@@ -146,8 +141,7 @@ class AuthVM extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Getters for UI access
   String get email => userEmail ?? '';
   String get name => userName ?? '';
-  String get age => userAge ?? ''; // Added age getter
+  String get age => userAge ?? '';
 }
