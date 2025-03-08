@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:fasio_twist/api/api.dart';
+import 'package:fasio_twist/config/helper.dart';
 import 'package:fasio_twist/config/hive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -79,8 +80,8 @@ class AuthVM extends ChangeNotifier {
       if (response.statusCode == 200 && response.data['token'] != null) {
         token = response.data['token'];
         userEmail = loginModel.email;
-        userName = response.data['name']; // From API response if available
-        userAge = response.data['age']; // From API response if available
+        userName = response.data['name'];
+        userAge = response.data['age'];
 
         await HiveDB.toDb('authBox', 'userData', {
           'token': token,
@@ -89,14 +90,14 @@ class AuthVM extends ChangeNotifier {
           'age': userAge,
         });
         notifyListeners();
-        print("Login Success: $response");
+        logX("Login Success: $response");
         return true;
       }
     } catch (e) {
-      print("Error during login: $e");
+      logX("Error during login: $e");
       if (e is DioException) {
-        print("Dio error: ${e.message}");
-        print("Response: ${e.response?.data}");
+        logX("Dio error: ${e.message}");
+        logX("Response: ${e.response?.data}");
       }
     }
     return false;
@@ -115,7 +116,7 @@ class AuthVM extends ChangeNotifier {
         token = response.data['token'];
         userEmail = signupModel.email;
         userName = signupModel.name;
-        userAge = signupModel.age; 
+        userAge = signupModel.age;
 
         await HiveDB.toDb('authBox', 'userData', {
           'token': token,
@@ -127,10 +128,10 @@ class AuthVM extends ChangeNotifier {
         return true;
       }
     } catch (e) {
-      print("Error during signup: $e");
+      logX("Error during signup: $e");
       if (e is DioException) {
-        print("Dio error: ${e.message}");
-        print("Response: ${e.response?.data}");
+        logX("Dio error: ${e.message}");
+        logX("Response: ${e.response?.data}");
       }
     }
     return false;
@@ -141,7 +142,7 @@ class AuthVM extends ChangeNotifier {
     token = null;
     userEmail = null;
     userName = null;
-    userAge = null; // Clear age on logout
+    userAge = null;
     notifyListeners();
   }
 

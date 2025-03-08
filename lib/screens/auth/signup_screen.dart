@@ -109,30 +109,6 @@ class SignUpScreen extends ConsumerWidget {
                   children: [
                     SizedBox(height: size.height * 0.08),
 
-                    // Logo
-                    // Center(
-                    //   child: Container(
-                    //     width: 100,
-                    //     height: 100,
-                    //     decoration: BoxDecoration(
-                    //       color: Colors.white,
-                    //       borderRadius: BorderRadius.circular(25),
-                    //       boxShadow: [
-                    //         BoxShadow(
-                    //           color: Colors.black.withOpacity(0.2),
-                    //           blurRadius: 20,
-                    //           offset: const Offset(0, 10),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //     child: const Icon(
-                    //       Icons.shopping_bag_rounded,
-                    //       size: 60,
-                    //       color: Color.fromARGB(255, 245, 123, 204),
-                    //     ),
-                    //   ),
-                    // ),
-
                     const SizedBox(height: 40),
 
                     // Form card
