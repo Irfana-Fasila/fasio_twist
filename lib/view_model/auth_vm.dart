@@ -21,7 +21,7 @@ class LoginModel {
 // Signup Model
 class SignupModel {
   final String name;
-  final String age;
+  final int age; // Changed from String to int
   final String email;
   final String password;
 
@@ -32,7 +32,12 @@ class SignupModel {
     required this.password,
   });
 
-  Map<String, dynamic> toJson() => {'name': name, 'age': age, 'email': email, 'password': password};
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'age': age, // Already an int, no conversion needed
+        'email': email,
+        'password': password
+      };
 }
 
 final authVM = ChangeNotifierProvider<AuthVM>((ref) => AuthVM());
@@ -41,7 +46,7 @@ class AuthVM extends ChangeNotifier {
   String? token;
   String? userEmail;
   String? userName;
-  String? userAge;
+  int? userAge; // Changed from String to int
   final Dio dio = Dio();
   bool isLoading = true;
 
@@ -57,7 +62,7 @@ class AuthVM extends ChangeNotifier {
       token = data['token'];
       userEmail = data['email'];
       userName = data['name'];
-      userAge = data['age'];
+      userAge = data['age'] is String ? int.tryParse(data['age']) ?? 0 : data['age'] as int?; // Handle possible String from storage
     }
     isLoading = false;
     notifyListeners();
@@ -76,7 +81,7 @@ class AuthVM extends ChangeNotifier {
         token = response.data['token'];
         userEmail = loginModel.email;
         userName = response.data['name'];
-        userAge = response.data['age'];
+        userAge = response.data['age'] is String ? int.tryParse(response.data['age']) ?? 0 : response.data['age'] as int?; // Convert API response if needed
 
         await HiveDB.toDb('authBox', 'userData', {
           'token': token,
@@ -143,5 +148,5 @@ class AuthVM extends ChangeNotifier {
 
   String get email => userEmail ?? '';
   String get name => userName ?? '';
-  String get age => userAge ?? '';
+  int? get age => userAge;
 }

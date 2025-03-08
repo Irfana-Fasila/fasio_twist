@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:fasio_twist/config/helper.dart';
 import 'package:fasio_twist/route/route.dart';
 import 'package:fasio_twist/view_model/auth_vm.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         name: nameController.text,
         email: emailController.text,
         password: passwordController.text,
-        age: ageController.text,
+        age: int.parse(ageController.text),
       );
 
       bool success = await ref.read(authVM).signUp(signupModel);
@@ -70,6 +71,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             ),
           ),
         );
+        logX(success, "lllllllllllllll");
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

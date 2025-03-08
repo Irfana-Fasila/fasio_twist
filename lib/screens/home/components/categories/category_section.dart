@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Define the categories provider with age-based filtering
 final categoriesProvider = Provider<Map<String, Map<String, dynamic>>>((ref) {
-  final int age = int.tryParse(ref.watch(authVM).age) ?? 0;
+  final int age = ref.watch(authVM).age ?? 0;
 
   final allCategories = {
     'Casual': {
@@ -118,13 +118,6 @@ class CategoriesPage extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(
-                        "Age: ${ref.watch(authVM).age}",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                        ),
-                      ),
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 12,
