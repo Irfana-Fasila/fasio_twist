@@ -36,6 +36,8 @@ final authVM = ChangeNotifierProvider<AuthVM>((ref) => AuthVM());
 
 class AuthVM extends ChangeNotifier {
   String? token;
+  String? userEmail;
+  String? userName;
   final Dio dio = Dio();
   bool isLoading = true;
 
@@ -46,8 +48,12 @@ class AuthVM extends ChangeNotifier {
   void initializeHive() async {
     isLoading = true;
     notifyListeners();
-    Map<String, dynamic>? data = await HiveDB.fromDb('authBox', 'token');
-    token = data?['token'];
+    Map<String, dynamic>? data = await HiveDB.fromDb('authBox', 'userData');
+    if (data != null) {
+      token = data['token'];
+      userEmail = data['email'];
+      userName = data['name'];
+    }
     isLoading = false;
     notifyListeners();
   }
@@ -63,7 +69,15 @@ class AuthVM extends ChangeNotifier {
 
       if (response.statusCode == 200 && response.data['token'] != null) {
         token = response.data['token'];
-        await HiveDB.toDb('authBox', 'token', {'token': token});
+        userEmail = loginModel.email;
+        // Assuming the API returns the name in the response, if not, it will be null
+        userName = response.data['name'];
+
+        await HiveDB.toDb('authBox', 'userData', {
+          'token': token,
+          'email': userEmail,
+          'name': userName,
+        });
         notifyListeners();
         print("Login Success: $response");
         return true;
@@ -89,7 +103,14 @@ class AuthVM extends ChangeNotifier {
 
       if (response.statusCode == 200 && response.data['token'] != null) {
         token = response.data['token'];
-        await HiveDB.toDb('authBox', 'token', {'token': token});
+        userEmail = signupModel.email;
+        userName = signupModel.name;
+
+        await HiveDB.toDb('authBox', 'userData', {
+          'token': token,
+          'email': userEmail,
+          'name': userName,
+        });
         notifyListeners();
         return true;
       }
@@ -104,8 +125,14 @@ class AuthVM extends ChangeNotifier {
   }
 
   Future<void> logout() async {
-    await HiveDB.deleteFromDb('authBox', 'token');
+    await HiveDB.deleteFromDb('authBox', 'userData');
     token = null;
+    userEmail = null;
+    userName = null;
     notifyListeners();
   }
+
+  // Getters for UI access
+  String get email => userEmail ?? '';
+  String get name => userName ?? '';
 }

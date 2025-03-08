@@ -91,7 +91,7 @@ class ProfileScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          "",
+                          ref.watch(authVM).name,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 22,
@@ -100,7 +100,7 @@ class ProfileScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          userData['email'],
+                          ref.watch(authVM).email,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
