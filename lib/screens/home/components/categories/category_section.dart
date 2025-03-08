@@ -2,7 +2,6 @@ import 'package:fasio_twist/view_model/auth_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// Define the categories provider with age-based filtering
 final categoriesProvider = Provider<Map<String, Map<String, dynamic>>>((ref) {
   final int age = ref.watch(authVM).age ?? 0;
 
