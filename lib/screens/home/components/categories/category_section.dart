@@ -1,59 +1,33 @@
+import 'package:fasio_twist/view_model/auth_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CategoriesPage extends StatefulWidget {
-  const CategoriesPage({super.key});
-
-  @override
-  State<CategoriesPage> createState() => _CategoriesPageState();
-}
-
-class _CategoriesPageState extends State<CategoriesPage> {
-  final Map<String, Map<String, dynamic>> categories = {
+// Define the categories provider
+final categoriesProvider = Provider<Map<String, Map<String, dynamic>>>((ref) {
+  return {
     'Casual': {
-      'images': [
-        'assets/images/casual1.jpeg',
-        'assets/images/casual2.jpeg',
-        'assets/images/casual3.jpeg',
-        'assets/images/casual4.jpeg',
-        'assets/images/casual5.jpeg'
-      ],
+      'images': ['assets/images/casual1.jpeg', 'assets/images/casual2.jpeg', 'assets/images/casual3.jpeg', 'assets/images/casual4.jpeg', 'assets/images/casual5.jpeg'],
       'color': const Color(0xFFE3F2FD),
       'icon': Icons.weekend,
       'description': 'Comfortable everyday wear',
       'itemCount': 43,
     },
     'Trendy': {
-      'images': [
-        'assets/images/trendy1.jpeg',
-        'assets/images/trendy2.jpeg',
-        'assets/images/trendy3.jpeg'
-      ],
+      'images': ['assets/images/trendy1.jpeg', 'assets/images/trendy2.jpeg', 'assets/images/trendy3.jpeg'],
       'color': const Color(0xFFF3E5F5),
       'icon': Icons.trending_up,
       'description': 'Latest fashion trends',
       'itemCount': 28,
     },
     'Traditional': {
-      'images': [
-        'assets/images/tred1.jpeg',
-        'assets/images/tred2.jpeg',
-        'assets/images/tred3.jpeg',
-        'assets/images/tred4.jpeg',
-        'assets/images/tred5.jpeg',
-        'assets/images/tred6.jpeg'
-      ],
+      'images': ['assets/images/tred1.jpeg', 'assets/images/tred2.jpeg', 'assets/images/tred3.jpeg', 'assets/images/tred4.jpeg', 'assets/images/tred5.jpeg', 'assets/images/tred6.jpeg'],
       'color': const Color(0xFFFFF3E0),
       'icon': Icons.auto_awesome,
       'description': 'Heritage collection',
       'itemCount': 37,
     },
     'Pakistani': {
-      'images': [
-        'assets/images/pak1.jpeg',
-        'assets/images/pak2.jpeg',
-        'assets/images/pak3.jpeg',
-        'assets/images/pak4.jpg'
-      ],
+      'images': ['assets/images/pak1.jpeg', 'assets/images/pak2.jpeg', 'assets/images/pak3.jpeg', 'assets/images/pak4.jpg'],
       'color': const Color(0xFFE8F5E9),
       'icon': Icons.stars,
       'description': 'Elegant Pakistani designs',
@@ -74,17 +48,10 @@ class _CategoriesPageState extends State<CategoriesPage> {
       'itemCount': 12,
     },
     'Western': {
-      'images': [
-        'assets/images/west1.jpeg',
-        'assets/images/west2.jpeg',
-        'assets/images/west3.jpeg',
-        'assets/images/west4.jpeg',
-        'assets/images/west5.jpg'
-      ],
+      'images': ['assets/images/west1.jpeg', 'assets/images/west2.jpeg', 'assets/images/west3.jpeg', 'assets/images/west4.jpeg', 'assets/images/west5.jpg'],
       'color': const Color(0xFFE8EAF6),
       'icon': Icons.explore,
       'description': 'Contemporary western styles',
-      
       'itemCount': 31,
     },
     'Formal': {
@@ -95,12 +62,19 @@ class _CategoriesPageState extends State<CategoriesPage> {
       'itemCount': 16,
     },
   };
+});
+
+class CategoriesPage extends ConsumerWidget {
+  const CategoriesPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final categories = ref.watch(categoriesProvider);
+
     return CustomScrollView(
       slivers: [
-        // Hero header
+        // Hero header (unchanged)
+
         SliverToBoxAdapter(
           child: Container(
             height: 180,
@@ -114,7 +88,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
             ),
             child: Stack(
               children: [
-                // Gradient overlay
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
@@ -128,13 +101,19 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     ),
                   ),
                 ),
-                // Text content
                 Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      Text(
+                        "Age : ${ref.watch(authVM).age}",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
+                      ),
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 12,
@@ -169,6 +148,39 @@ class _CategoriesPageState extends State<CategoriesPage> {
                           fontSize: 14,
                         ),
                       ),
+                      const SizedBox(height: 12),
+
+                      // Builder(
+                      //   builder: (context) {
+                      //     final int age = int.parse(ref.watch(authVM).age);
+                      //     Color containerColor;
+
+                      //     if (age >= 13 && age <= 25) {
+                      //       containerColor = Colors.red;
+                      //     } else if (age > 25 && age <= 40) {
+                      //       containerColor = Colors.green;
+                      //     } else if (age > 40 && age <= 60) {
+                      //       containerColor = Colors.blue;
+                      //     } else {
+                      //       containerColor = Colors.transparent; // Default case
+                      //     }
+
+                      //     return Container(
+                      //       padding: const EdgeInsets.all(12),
+                      //       decoration: BoxDecoration(
+                      //         color: containerColor,
+                      //         borderRadius: BorderRadius.circular(10),
+                      //       ),
+                      //       child: Text(
+                      //         "Age Category: ${age >= 13 && age <= 25 ? '13-25' : age > 25 && age <= 40 ? '25-40' : '40-60'}",
+                      //         style: const TextStyle(
+                      //           color: Colors.white,
+                      //           fontWeight: FontWeight.bold,
+                      //         ),
+                      //       ),
+                      //     );
+                      //   },
+                      // ),
                     ],
                   ),
                 ),
@@ -177,7 +189,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
           ),
         ),
 
-        // Category section title
+        // Category section title (unchanged)
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -278,10 +290,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image container with count overlay
             Stack(
               children: [
-                // Main image
                 Container(
                   height: 120,
                   decoration: BoxDecoration(
@@ -290,14 +300,11 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       topRight: Radius.circular(16),
                     ),
                     image: DecorationImage(
-                      image: AssetImage(imagePaths.isNotEmpty
-                          ? imagePaths[0]
-                          : 'assets/placeholder.jpg'),
+                      image: AssetImage(imagePaths.isNotEmpty ? imagePaths[0] : 'assets/placeholder.jpg'),
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                // Item count overlay
                 Positioned(
                   top: 10,
                   right: 10,
@@ -322,7 +329,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 ),
               ],
             ),
-            // Category info
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: Column(
@@ -385,7 +391,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   }
 }
 
-class CategoryDetailPage extends StatelessWidget {
+class CategoryDetailPage extends ConsumerWidget {
   final String category;
   final List<String> imagePaths;
   final Color backgroundColor;
@@ -398,12 +404,11 @@ class CategoryDetailPage extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       body: CustomScrollView(
         slivers: [
-          // Custom app bar with image
           SliverAppBar(
             expandedHeight: 200.0,
             floating: false,
@@ -427,7 +432,6 @@ class CategoryDetailPage extends StatelessWidget {
                           fit: BoxFit.cover,
                         )
                       : Container(color: backgroundColor),
-                  // Gradient overlay for better text visibility
                   Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -455,8 +459,6 @@ class CategoryDetailPage extends StatelessWidget {
               ),
             ],
           ),
-
-          // Filter chips
           SliverToBoxAdapter(
             child: Container(
               height: 50,
@@ -474,8 +476,6 @@ class CategoryDetailPage extends StatelessWidget {
               ),
             ),
           ),
-
-          // Products grid
           SliverPadding(
             padding: const EdgeInsets.all(16.0),
             sliver: SliverGrid(
@@ -491,7 +491,7 @@ class CategoryDetailPage extends StatelessWidget {
                   '$category ${index + 1}',
                   '₹${999 - index * 50}',
                   imagePaths[index % imagePaths.length],
-                  index % 3 == 0, // Every third item is marked as new
+                  index % 3 == 0,
                 ),
                 childCount: imagePaths.length,
               ),
@@ -545,16 +545,14 @@ class CategoryDetailPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Product image with wishlist icon
           Stack(
             children: [
-              // Main image - Modified to take the full width and a proportional height
               ClipRRect(
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(12),
                 ),
                 child: AspectRatio(
-                  aspectRatio: 1,  // This makes the image square
+                  aspectRatio: 1,
                   child: Image.asset(
                     imagePath,
                     width: double.infinity,
@@ -562,7 +560,6 @@ class CategoryDetailPage extends StatelessWidget {
                   ),
                 ),
               ),
-              // New tag
               if (isNew)
                 Positioned(
                   top: 8,
@@ -586,7 +583,6 @@ class CategoryDetailPage extends StatelessWidget {
                     ),
                   ),
                 ),
-              // Wishlist button
               Positioned(
                 top: 8,
                 right: 8,
@@ -611,7 +607,6 @@ class CategoryDetailPage extends StatelessWidget {
               ),
             ],
           ),
-          // Product info
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
@@ -627,7 +622,6 @@ class CategoryDetailPage extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
-                // Rating
                 Row(
                   children: [
                     ...List.generate(
@@ -649,7 +643,6 @@ class CategoryDetailPage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-                // Price row with add button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
