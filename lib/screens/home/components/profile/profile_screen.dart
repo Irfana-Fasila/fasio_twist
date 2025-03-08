@@ -113,22 +113,6 @@ class ProfileScreen extends ConsumerWidget {
               ),
               titlePadding: const EdgeInsets.all(0),
             ),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.edit),
-                onPressed: () {
-                  // Navigate to edit profile
-                },
-                tooltip: 'Edit Profile',
-              ),
-              IconButton(
-                icon: const Icon(Icons.settings),
-                onPressed: () {
-                  // Navigate to settings
-                },
-                tooltip: 'Settings',
-              ),
-            ],
           ),
           SliverToBoxAdapter(
             child: Padding(
