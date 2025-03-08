@@ -149,38 +149,6 @@ class CategoriesPage extends ConsumerWidget {
                         ),
                       ),
                       const SizedBox(height: 12),
-
-                      // Builder(
-                      //   builder: (context) {
-                      //     final int age = int.parse(ref.watch(authVM).age);
-                      //     Color containerColor;
-
-                      //     if (age >= 13 && age <= 25) {
-                      //       containerColor = Colors.red;
-                      //     } else if (age > 25 && age <= 40) {
-                      //       containerColor = Colors.green;
-                      //     } else if (age > 40 && age <= 60) {
-                      //       containerColor = Colors.blue;
-                      //     } else {
-                      //       containerColor = Colors.transparent; // Default case
-                      //     }
-
-                      //     return Container(
-                      //       padding: const EdgeInsets.all(12),
-                      //       decoration: BoxDecoration(
-                      //         color: containerColor,
-                      //         borderRadius: BorderRadius.circular(10),
-                      //       ),
-                      //       child: Text(
-                      //         "Age Category: ${age >= 13 && age <= 25 ? '13-25' : age > 25 && age <= 40 ? '25-40' : '40-60'}",
-                      //         style: const TextStyle(
-                      //           color: Colors.white,
-                      //           fontWeight: FontWeight.bold,
-                      //         ),
-                      //       ),
-                      //     );
-                      //   },
-                      // ),
                     ],
                   ),
                 ),
