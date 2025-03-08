@@ -2,9 +2,11 @@ import 'package:fasio_twist/view_model/auth_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// Define the categories provider
+// Define the categories provider with age-based filtering
 final categoriesProvider = Provider<Map<String, Map<String, dynamic>>>((ref) {
-  return {
+  final int age = int.tryParse(ref.watch(authVM).age) ?? 0;
+
+  final allCategories = {
     'Casual': {
       'images': ['assets/images/casual1.jpeg', 'assets/images/casual2.jpeg', 'assets/images/casual3.jpeg', 'assets/images/casual4.jpeg', 'assets/images/casual5.jpeg'],
       'color': const Color(0xFFE3F2FD),
@@ -62,6 +64,20 @@ final categoriesProvider = Provider<Map<String, Map<String, dynamic>>>((ref) {
       'itemCount': 16,
     },
   };
+
+  // Filter categories based on age
+  if (age >= 13 && age <= 25) {
+    return Map.fromEntries(allCategories.entries.where((entry) => ['Trendy', 'Pakistani', 'Formal', 'Western', 'Modest'].contains(entry.key)));
+  } else if (age > 25 && age <= 35) {
+    return Map.fromEntries(allCategories.entries.where((entry) => ['Pakistani', 'Casual', 'Gown', 'Modest'].contains(entry.key)));
+  } else if (age > 35 && age <= 50) {
+    return Map.fromEntries(allCategories.entries.where((entry) => ['Traditional', 'Casual', 'Modest'].contains(entry.key)));
+  } else if (age > 50) {
+    return Map.fromEntries(allCategories.entries.where((entry) => ['Traditional'].contains(entry.key)));
+  }
+
+  // Return all categories if age is 0 or invalid
+  return allCategories;
 });
 
 class CategoriesPage extends ConsumerWidget {
@@ -73,8 +89,6 @@ class CategoriesPage extends ConsumerWidget {
 
     return CustomScrollView(
       slivers: [
-        // Hero header (unchanged)
-
         SliverToBoxAdapter(
           child: Container(
             height: 180,
@@ -108,7 +122,7 @@ class CategoriesPage extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        "Age : ${ref.watch(authVM).age}",
+                        "Age: ${ref.watch(authVM).age}",
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,
@@ -156,8 +170,6 @@ class CategoriesPage extends ConsumerWidget {
             ),
           ),
         ),
-
-        // Category section title (unchanged)
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -183,8 +195,6 @@ class CategoriesPage extends ConsumerWidget {
             ),
           ),
         ),
-
-        // Categories grid
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           sliver: SliverGrid(
@@ -212,7 +222,6 @@ class CategoriesPage extends ConsumerWidget {
             ),
           ),
         ),
-
         const SliverToBoxAdapter(
           child: SizedBox(height: 24),
         ),
