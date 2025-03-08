@@ -13,13 +13,16 @@ class LoginScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
 
-    void _submitForm() async {
-      if (_formKey.currentState!.validate()) {
-        final email = emailController.text;
-        final password = passwordController.text;
-        await ref.read(authVM).login(email, password).then((value) {
+    void submitForm() async {
+      if (formKey.currentState!.validate()) {
+        final loginModel = LoginModel(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+
+        await ref.read(authVM).login(loginModel).then((value) {
           if (value) {
             routeX.goNamed(MainRoutes.home);
             ScaffoldMessenger.of(context).showSnackBar(
@@ -145,7 +148,7 @@ class LoginScreen extends ConsumerWidget {
                             ),
                           ),
                           child: Form(
-                            key: _formKey,
+                            key: formKey,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
@@ -271,7 +274,7 @@ class LoginScreen extends ConsumerWidget {
                                     ],
                                   ),
                                   child: ElevatedButton(
-                                    onPressed: _submitForm,
+                                    onPressed: submitForm,
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.transparent,
                                       foregroundColor: Colors.white,

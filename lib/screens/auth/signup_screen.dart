@@ -13,15 +13,17 @@ class SignUpScreen extends ConsumerWidget {
     final TextEditingController nameController = TextEditingController();
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
 
-    void _submitForm() async {
-      if (_formKey.currentState!.validate()) {
-        final name = nameController.text;
-        final email = emailController.text;
-        final password = passwordController.text;
+    void submitForm() async {
+      if (formKey.currentState!.validate()) {
+        final signupModel = SignupModel(
+          name: nameController.text,
+          email: emailController.text,
+          password: passwordController.text,
+        );
 
-        bool success = await ref.read(authVM).signUp(name, email, password);
+        bool success = await ref.read(authVM).signUp(signupModel);
 
         if (success) {
           routeX.go('/home');
@@ -147,7 +149,7 @@ class SignUpScreen extends ConsumerWidget {
                             ),
                           ),
                           child: Form(
-                            key: _formKey,
+                            key: formKey,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
@@ -312,7 +314,7 @@ class SignUpScreen extends ConsumerWidget {
                                     ],
                                   ),
                                   child: ElevatedButton(
-                                    onPressed: _submitForm,
+                                    onPressed: submitForm,
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.transparent,
                                       foregroundColor: Colors.white,

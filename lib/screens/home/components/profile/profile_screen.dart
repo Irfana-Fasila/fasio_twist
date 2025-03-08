@@ -91,7 +91,7 @@ class ProfileScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          userData['name'],
+                          "",
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 22,

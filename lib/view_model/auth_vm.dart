@@ -4,6 +4,34 @@ import 'package:fasio_twist/config/hive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// Login Model
+class LoginModel {
+  final String email;
+  final String password;
+
+  LoginModel({
+    required this.email,
+    required this.password,
+  });
+
+  Map<String, dynamic> toJson() => {'email': email, 'password': password};
+}
+
+// Signup Model
+class SignupModel {
+  final String name;
+  final String email;
+  final String password;
+
+  SignupModel({
+    required this.name,
+    required this.email,
+    required this.password,
+  });
+
+  Map<String, dynamic> toJson() => {'name': name, 'email': email, 'password': password};
+}
+
 final authVM = ChangeNotifierProvider<AuthVM>((ref) => AuthVM());
 
 class AuthVM extends ChangeNotifier {
@@ -24,13 +52,13 @@ class AuthVM extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> login(String email, String password) async {
+  Future<bool> login(LoginModel loginModel) async {
     try {
       dio.options.headers = {'Content-Type': 'application/json'};
 
       final response = await dio.post(
         ApiEndpoints.login,
-        data: {'email': email, 'password': password},
+        data: loginModel.toJson(),
       );
 
       if (response.statusCode == 200 && response.data['token'] != null) {
@@ -50,13 +78,13 @@ class AuthVM extends ChangeNotifier {
     return false;
   }
 
-  Future<bool> signUp(String name, String email, String password) async {
+  Future<bool> signUp(SignupModel signupModel) async {
     try {
       dio.options.headers = {'Content-Type': 'application/json'};
 
       final response = await dio.post(
         ApiEndpoints.signUp,
-        data: {'name': name, 'email': email, 'password': password},
+        data: signupModel.toJson(),
       );
 
       if (response.statusCode == 200 && response.data['token'] != null) {
