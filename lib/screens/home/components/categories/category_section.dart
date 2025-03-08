@@ -65,7 +65,6 @@ final categoriesProvider = Provider<Map<String, Map<String, dynamic>>>((ref) {
     },
   };
 
-  // Filter categories based on age
   if (age >= 13 && age <= 25) {
     return Map.fromEntries(allCategories.entries.where((entry) => ['Trendy', 'Pakistani', 'Formal', 'Western', 'Modest'].contains(entry.key)));
   } else if (age > 25 && age <= 35) {
@@ -75,8 +74,6 @@ final categoriesProvider = Provider<Map<String, Map<String, dynamic>>>((ref) {
   } else if (age > 50) {
     return Map.fromEntries(allCategories.entries.where((entry) => ['Traditional'].contains(entry.key)));
   }
-
-  // Return all categories if age is 0 or invalid
   return allCategories;
 });
 
