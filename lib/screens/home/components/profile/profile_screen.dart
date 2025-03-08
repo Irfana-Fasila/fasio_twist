@@ -1,72 +1,69 @@
+import 'package:fasio_twist/route/route.dart';
+import 'package:fasio_twist/route/route_list.dart';
+import 'package:fasio_twist/view_model/auth_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Sample user data - in a real app, this would come from your providers
+    final Map<String, dynamic> userData = {
+      'name': 'Sophia Chen',
+      'email': 'sophia.chen@example.com',
+      'phone': '+91 9876543210',
+      'memberSince': 'March 2023',
+      'profileImage': 'assets/images/profile_avatar.jpg',
+      'loyaltyPoints': 2450,
+      'orderCount': 17,
+      'wishlistCount': 32,
+      'address': '42 Fashion Street, Silk Garden, Mumbai - 400001',
+      'paymentMethods': [
+        {
+          'type': 'Credit Card',
+          'number': '**** **** **** 5678',
+          'isDefault': true,
+        },
+        {
+          'type': 'UPI',
+          'number': 'example@upi',
+          'isDefault': false,
+        }
+      ],
+    };
 
-class _ProfileScreenState extends State<ProfileScreen> {
-  // Sample user data - in a real app, this would come from your user authentication/database
-  final Map<String, dynamic> userData = {
-    'name': 'Sophia Chen',
-    'email': 'sophia.chen@example.com',
-    'phone': '+91 9876543210',
-    'memberSince': 'March 2023',
-    'profileImage': 'assets/images/profile_avatar.jpg',
-    'loyaltyPoints': 2450,
-    'orderCount': 17,
-    'wishlistCount': 32,
-    'address': '42 Fashion Street, Silk Garden, Mumbai - 400001',
-    'paymentMethods': [
+    // Order statuses for the Order History section
+    final List<Map<String, dynamic>> recentOrders = [
       {
-        'type': 'Credit Card',
-        'number': '**** **** **** 5678',
-        'isDefault': true,
+        'id': 'FT-6723',
+        'date': 'Feb 24, 2025',
+        'amount': '₹2,499',
+        'status': 'Delivered',
+        'statusColor': Colors.green,
+        'items': 3,
       },
       {
-        'type': 'UPI',
-        'number': 'example@upi',
-        'isDefault': false,
-      }
-    ],
-  };
-
-  // Order statuses for the Order History section
-  final List<Map<String, dynamic>> recentOrders = [
-    {
-      'id': 'FT-6723',
-      'date': 'Feb 24, 2025',
-      'amount': '₹2,499',
-      'status': 'Delivered',
-      'statusColor': Colors.green,
-      'items': 3,
-    },
-    {
-      'id': 'FT-6589',
-      'date': 'Feb 10, 2025',
-      'amount': '₹1,799',
-      'status': 'Processing',
-      'statusColor': Colors.orange,
-      'items': 2,
-    },
-    {
-      'id': 'FT-6437',
-      'date': 'Jan 27, 2025',
-      'amount': '₹3,299',
-      'status': 'Delivered',
-      'statusColor': Colors.green,
-      'items': 4,
-    },
-  ];
-
-  @override
-  Widget build(BuildContext context) {
+        'id': 'FT-6589',
+        'date': 'Feb 10, 2025',
+        'amount': '₹1,799',
+        'status': 'Processing',
+        'statusColor': Colors.orange,
+        'items': 2,
+      },
+      {
+        'id': 'FT-6437',
+        'date': 'Jan 27, 2025',
+        'amount': '₹3,299',
+        'status': 'Delivered',
+        'statusColor': Colors.green,
+        'items': 4,
+      },
+    ];
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          // Sliver app bar with profile header
           SliverAppBar(
             expandedHeight: 200.0,
             pinned: true,
@@ -88,13 +85,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Profile picture
                         CircleAvatar(
                           radius: 40,
                           backgroundImage: AssetImage(userData['profileImage']),
                         ),
                         const SizedBox(height: 12),
-                        // User name
                         Text(
                           userData['name'],
                           style: const TextStyle(
@@ -104,7 +99,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         const SizedBox(height: 4),
-                        // User email
                         Text(
                           userData['email'],
                           style: const TextStyle(
@@ -136,8 +130,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ],
           ),
-
-          // Stats cards
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -170,13 +162,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-
-          // Section divider
           SliverToBoxAdapter(
             child: _buildSectionTitle(context, 'Account Information'),
           ),
-
-          // Account info cards
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -209,12 +197,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-
-          // Payment methods
           SliverToBoxAdapter(
             child: _buildSectionTitle(context, 'Payment Methods'),
           ),
-
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -233,12 +218,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-
-          // Recent orders
           SliverToBoxAdapter(
             child: _buildSectionTitle(context, 'Recent Orders'),
           ),
-
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
@@ -250,8 +232,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               childCount: recentOrders.length,
             ),
           ),
-
-          // Action buttons
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -276,7 +256,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     context,
                     'Sign Out',
                     Icons.logout,
-                    () {},
+                    () async {
+                      await ref.read(authVM).logout().then(
+                            (value) => routeX.pushReplacementNamed(MainRoutes.login),
+                          );
+                    },
                     isOutlined: true,
                     textColor: Colors.red,
                     borderColor: Colors.red,
@@ -452,7 +436,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Order ID and date row
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -473,7 +456,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
             const SizedBox(height: 12),
-            // Order details row
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -494,7 +476,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
             const SizedBox(height: 12),
-            // Status and action row
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -546,11 +527,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         icon: Icon(icon),
         label: Text(label),
         style: ElevatedButton.styleFrom(
-          foregroundColor: isOutlined
-              ? textColor ?? Theme.of(context).primaryColor
-              : Colors.white,
-          backgroundColor:
-              isOutlined ? Colors.transparent : Theme.of(context).primaryColor,
+          foregroundColor: isOutlined ? textColor ?? Theme.of(context).primaryColor : Colors.white,
+          backgroundColor: isOutlined ? Colors.transparent : Theme.of(context).primaryColor,
           padding: const EdgeInsets.symmetric(vertical: 12),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
