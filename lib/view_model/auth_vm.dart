@@ -2,43 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:fasio_twist/api/api.dart';
 import 'package:fasio_twist/config/helper.dart';
 import 'package:fasio_twist/config/hive.dart';
+import 'package:fasio_twist/model/auth_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-// Login Model
-class LoginModel {
-  final String email;
-  final String password;
-
-  LoginModel({
-    required this.email,
-    required this.password,
-  });
-
-  Map<String, dynamic> toJson() => {'email': email, 'password': password};
-}
-
-// Signup Model
-class SignupModel {
-  final String name;
-  final int age; // Changed from String to int
-  final String email;
-  final String password;
-
-  SignupModel({
-    required this.name,
-    required this.age,
-    required this.email,
-    required this.password,
-  });
-
-  Map<String, dynamic> toJson() => {
-        'name': name,
-        'age': age, // Already an int, no conversion needed
-        'email': email,
-        'password': password
-      };
-}
 
 final authVM = ChangeNotifierProvider<AuthVM>((ref) => AuthVM());
 
