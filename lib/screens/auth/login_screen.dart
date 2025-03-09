@@ -40,8 +40,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     super.dispose();
   }
 
+  bool isLoading = false;
   void submitForm() async {
     if (formKey.currentState!.validate()) {
+      setState(() => isLoading = true);
       final loginModel = LoginModel(
         email: emailController.text,
         password: passwordController.text,
@@ -71,6 +73,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
           );
         }
+      }).whenComplete(() {
+        // Reset loading state when complete
+        setState(() => isLoading = false);
       });
     }
   }
@@ -293,6 +298,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   const SizedBox(height: 32),
 
                                   // Login button
+// In your build method, modify the button:
                                   Container(
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15),
@@ -311,7 +317,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                       ],
                                     ),
                                     child: ElevatedButton(
-                                      onPressed: submitForm,
+                                      onPressed: isLoading ? null : submitForm, // Disable button when loading
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.transparent,
                                         foregroundColor: Colors.white,
@@ -320,16 +326,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                           borderRadius: BorderRadius.circular(15),
                                         ),
                                       ),
-                                      child: const Padding(
-                                        padding: EdgeInsets.symmetric(vertical: 16),
-                                        child: Text(
-                                          'LOGIN',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 1.5,
-                                          ),
-                                        ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 16),
+                                        child: isLoading
+                                            ? const SizedBox(
+                                                height: 20,
+                                                width: 20,
+                                                child: CircularProgressIndicator(
+                                                  strokeWidth: 2,
+                                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                                ),
+                                              )
+                                            : const Text(
+                                                'LOGIN',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  letterSpacing: 1.5,
+                                                ),
+                                              ),
                                       ),
                                     ),
                                   ),

@@ -47,8 +47,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     super.dispose();
   }
 
+  bool isLoading = false;
+
   void submitForm() async {
     if (formKey.currentState!.validate()) {
+      setState(() => isLoading = true);
+
       final signupModel = SignupModel(
         name: nameController.text,
         email: emailController.text,
@@ -82,6 +86,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           ),
         );
       }
+      // Reset loading state when complete
+      setState(() => isLoading = false);
     }
   }
 
@@ -391,7 +397,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                       ],
                                     ),
                                     child: ElevatedButton(
-                                      onPressed: submitForm,
+                                      onPressed: isLoading ? null : submitForm, // Disable button when loading
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.transparent,
                                         foregroundColor: Colors.white,
@@ -400,16 +406,25 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                           borderRadius: BorderRadius.circular(15),
                                         ),
                                       ),
-                                      child: const Padding(
+                                      child: Padding(
                                         padding: EdgeInsets.symmetric(vertical: 16),
-                                        child: Text(
-                                          'SIGN UP',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 1.5,
-                                          ),
-                                        ),
+                                        child: isLoading
+                                            ? const SizedBox(
+                                                height: 20,
+                                                width: 20,
+                                                child: CircularProgressIndicator(
+                                                  strokeWidth: 2,
+                                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                                ),
+                                              )
+                                            : Text(
+                                                'SIGN UP',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  letterSpacing: 1.5,
+                                                ),
+                                              ),
                                       ),
                                     ),
                                   ),
