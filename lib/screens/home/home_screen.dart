@@ -26,38 +26,38 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: SvgPicture.asset("assets/icons/back.svg"),
-          onPressed: () {},
+        title: Text(
+          "Fasio Twist",
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
         ),
+        leadingWidth: 120, // Added to accommodate wider title
         actions: <Widget>[
           IconButton(
             icon: SvgPicture.asset(
               "assets/icons/search.svg",
               colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+              height: 24, // Added for consistent icon size
             ),
             onPressed: () {},
+            tooltip: 'Search', // Added for accessibility
           ),
           IconButton(
             icon: SvgPicture.asset(
               "assets/icons/cart.svg",
               colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+              height: 24, // Added for consistent icon size
             ),
             onPressed: () {},
+            tooltip: 'Cart', // Added for accessibility
           ),
-          const SizedBox(width: 16), // Replaced kDefaultPaddin / 2
+          const SizedBox(width: 16),
         ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0), // Replaced kDefaultPaddin
-            child: Text(
-              "Fasio Twist",
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
-            ),
-          ),
           Categories(
             selectedIndex: selectedIndex,
             onCategorySelected: (index) {

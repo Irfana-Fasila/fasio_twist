@@ -8,7 +8,7 @@ class CategoriesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categories = ref.watch(categoriesProvider);
+    final categories = allCategories;
     final screenWidth = MediaQuery.of(context).size.width;
 
     return CustomScrollView(
