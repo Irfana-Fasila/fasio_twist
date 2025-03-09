@@ -58,7 +58,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 'Welcome back!',
                 style: TextStyle(color: Color.fromRGBO(161, 193, 222, 1)),
               ),
-              backgroundColor: const Color.fromARGB(255, 239, 224, 233),
+              backgroundColor: const Color.fromARGB(255, 55, 71, 95),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -69,7 +69,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Login failed'),
-              backgroundColor: Colors.redAccent,
+              backgroundColor: Color.fromARGB(255, 73, 45, 124),
             ),
           );
         }
@@ -96,7 +96,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Color.fromARGB(255, 248, 178, 224),
+                    Color.fromARGB(255, 95, 103, 190),
                     Color.fromRGBO(228, 226, 234, 1),
                   ],
                 ),
@@ -111,7 +111,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 height: 200,
                 width: 200,
                 decoration: BoxDecoration(
-                  color: const Color.fromRGBO(251, 100, 203, 1).withOpacity(0.1),
+                  color: const Color.fromARGB(255, 71, 48, 146).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(100),
                 ),
               ),
@@ -159,7 +159,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           child: const Icon(
                             Icons.shopping_bag_rounded,
                             size: 60,
-                            color: Color.fromARGB(255, 245, 123, 204),
+                            color: Color.fromARGB(255, 143, 185, 244),
                           ),
                         ),
                       ),
@@ -174,10 +174,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           child: Container(
                             padding: const EdgeInsets.all(28),
                             decoration: BoxDecoration(
-                              color: const Color.fromRGBO(234, 145, 145, 1).withOpacity(0.1),
+                              color: const Color.fromARGB(255, 131, 174, 206).withOpacity(0.1),
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(
-                                color: const Color.fromRGBO(238, 160, 160, 1).withOpacity(0.2),
+                                color: const Color.fromARGB(255, 170, 170, 244).withOpacity(0.2),
                                 width: 1.5,
                               ),
                             ),
@@ -233,13 +233,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                       ),
                                       errorBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: const BorderSide(color: Colors.redAccent, width: 1),
+                                        borderSide: const BorderSide(color: Color.fromARGB(255, 39, 1, 113), width: 1),
                                       ),
                                       focusedErrorBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: const BorderSide(color: Colors.redAccent, width: 2),
+                                        borderSide: const BorderSide(color: Color.fromARGB(255, 2, 6, 119), width: 2),
                                       ),
-                                      errorStyle: const TextStyle(color: Colors.redAccent),
+                                      errorStyle: const TextStyle(color: Color.fromARGB(255, 216, 217, 221)),
                                     ),
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
@@ -276,13 +276,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                       ),
                                       errorBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: const BorderSide(color: Colors.redAccent, width: 1),
+                                        borderSide: const BorderSide(color: Color.fromARGB(255, 134, 165, 209), width: 1),
                                       ),
                                       focusedErrorBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: const BorderSide(color: Colors.redAccent, width: 2),
+                                        borderSide: const BorderSide(color: Color.fromARGB(255, 246, 242, 242), width: 2),
                                       ),
-                                      errorStyle: const TextStyle(color: Colors.redAccent),
+                                      errorStyle: const TextStyle(color: Color.fromARGB(255, 109, 132, 215)),
                                     ),
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
@@ -304,7 +304,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                       borderRadius: BorderRadius.circular(15),
                                       gradient: const LinearGradient(
                                         colors: [
-                                          Color(0xFF9C27B0),
+                                          Color.fromARGB(255, 84, 74, 145),
                                           Color.fromRGBO(228, 214, 249, 1),
                                         ],
                                       ),
@@ -334,7 +334,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                                 width: 20,
                                                 child: CircularProgressIndicator(
                                                   strokeWidth: 2,
-                                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                                  valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 134, 131, 202)),
                                                 ),
                                               )
                                             : const Text(

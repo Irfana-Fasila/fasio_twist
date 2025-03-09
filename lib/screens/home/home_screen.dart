@@ -236,7 +236,7 @@ class HomePage extends HookConsumerWidget {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.pink,
+                      color: const Color.fromARGB(255, 78, 48, 119),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Text(

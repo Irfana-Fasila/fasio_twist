@@ -82,7 +82,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Sign up failed'),
-            backgroundColor: Colors.redAccent,
+            backgroundColor: Color.fromARGB(255, 236, 233, 233),
           ),
         );
       }
@@ -108,7 +108,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Color.fromARGB(255, 248, 178, 224),
+                    Color.fromARGB(255, 95, 103, 190),
                     Color.fromRGBO(228, 226, 234, 1),
                   ],
                 ),
@@ -123,7 +123,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 height: 200,
                 width: 200,
                 decoration: BoxDecoration(
-                  color: const Color.fromRGBO(251, 100, 203, 1).withOpacity(0.1),
+                  color: const Color.fromARGB(255, 71, 48, 146).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(100),
                 ),
               ),
@@ -162,10 +162,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           child: Container(
                             padding: const EdgeInsets.all(28),
                             decoration: BoxDecoration(
-                              color: const Color.fromRGBO(234, 145, 145, 1).withOpacity(0.1),
+                              color: const Color.fromARGB(255, 236, 231, 231).withOpacity(0.1),
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(
-                                color: const Color.fromRGBO(238, 160, 160, 1).withOpacity(0.2),
+                                color: const Color.fromARGB(255, 220, 217, 217).withOpacity(0.2),
                                 width: 1.5,
                               ),
                             ),
@@ -221,9 +221,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                       ),
                                       focusedErrorBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: const BorderSide(color: Colors.redAccent, width: 2),
+                                        borderSide: const BorderSide(color: Color.fromARGB(255, 59, 49, 119), width: 2),
                                       ),
-                                      errorStyle: const TextStyle(color: Colors.redAccent),
+                                      errorStyle: const TextStyle(color: Color.fromARGB(255, 118, 119, 169)),
                                     ),
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
@@ -259,13 +259,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                       ),
                                       errorBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: const BorderSide(color: Colors.redAccent, width: 1),
+                                        borderSide: const BorderSide(color: Color.fromARGB(255, 185, 181, 181), width: 1),
                                       ),
                                       focusedErrorBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: const BorderSide(color: Colors.redAccent, width: 2),
+                                        borderSide: const BorderSide(color: Color.fromARGB(255, 250, 247, 247), width: 2),
                                       ),
-                                      errorStyle: const TextStyle(color: Colors.redAccent),
+                                      errorStyle: const TextStyle(color: Color.fromARGB(255, 211, 208, 208)),
                                     ),
                                     keyboardType: TextInputType.number,
                                     validator: (value) {
@@ -313,13 +313,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                       ),
                                       errorBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: const BorderSide(color: Colors.redAccent, width: 1),
+                                        borderSide: const BorderSide(color: Color.fromARGB(255, 230, 227, 227), width: 1),
                                       ),
                                       focusedErrorBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: const BorderSide(color: Colors.redAccent, width: 2),
+                                        borderSide: const BorderSide(color: Color.fromARGB(255, 231, 230, 231), width: 2),
                                       ),
-                                      errorStyle: const TextStyle(color: Colors.redAccent),
+                                      errorStyle: const TextStyle(color: Color.fromARGB(255, 238, 238, 241)),
                                     ),
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
@@ -356,13 +356,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                       ),
                                       errorBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: const BorderSide(color: Colors.redAccent, width: 1),
+                                        borderSide: const BorderSide(color: Color.fromARGB(255, 241, 239, 239), width: 1),
                                       ),
                                       focusedErrorBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: const BorderSide(color: Colors.redAccent, width: 2),
+                                        borderSide: const BorderSide(color: Color.fromARGB(255, 248, 245, 245), width: 2),
                                       ),
-                                      errorStyle: const TextStyle(color: Colors.redAccent),
+                                      errorStyle: const TextStyle(color: Color.fromARGB(255, 240, 240, 243)),
                                     ),
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
@@ -384,7 +384,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                       borderRadius: BorderRadius.circular(15),
                                       gradient: const LinearGradient(
                                         colors: [
-                                          Color(0xFF9C27B0),
+                                          Color.fromARGB(255, 84, 74, 145),
                                           Color.fromRGBO(228, 214, 249, 1),
                                         ],
                                       ),
