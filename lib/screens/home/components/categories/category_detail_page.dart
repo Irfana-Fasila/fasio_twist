@@ -1,186 +1,123 @@
-import 'package:fasio_twist/screens/home/components/categories/category_filtration.dart';
-import 'package:fasio_twist/screens/home/components/categories/category_section.dart';
-import 'package:fasio_twist/screens/home/components/offers/offer_screen.dart';
-import 'package:fasio_twist/screens/home/components/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'components/categories/categories.dart';
+class CategoryDetailPage extends ConsumerWidget {
+  final String category;
+  final List imagePaths;
+  final Color backgroundColor;
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  final List<String> categories = ["Home", "Categories", "Offers", "Account"];
-  int selectedIndex = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Text(
-          "Fasio Twist",
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-        ),
-        leadingWidth: 120, // Added to accommodate wider title
-        actions: <Widget>[
-          IconButton(
-            icon: SvgPicture.asset(
-              "assets/icons/search.svg",
-              colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
-              height: 24, // Added for consistent icon size
-            ),
-            onPressed: () {},
-            tooltip: 'Search', // Added for accessibility
-          ),
-          IconButton(
-            icon: SvgPicture.asset(
-              "assets/icons/cart.svg",
-              colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
-              height: 24, // Added for consistent icon size
-            ),
-            onPressed: () {},
-            tooltip: 'Cart', // Added for accessibility
-          ),
-          const SizedBox(width: 16),
-        ],
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Categories(
-            selectedIndex: selectedIndex,
-            onCategorySelected: (index) {
-              setState(() {
-                selectedIndex = index;
-              });
-            },
-          ),
-          Expanded(child: _buildSelectedScreen()),
-        ],
-      ),
-    );
-  }
-
-  /// Returns the widget for the selected category
-  Widget _buildSelectedScreen() {
-    switch (selectedIndex) {
-      case 0:
-        return _buildHomeScreen();
-      case 1:
-        return _buildCategoryScreen();
-      case 2:
-        return _buildOffersScreen();
-      case 3:
-        return _buildAccountScreen();
-      default:
-        return _buildHomeScreen();
-    }
-  }
-
-  /// Home Screen (Product Grid)
-  Widget _buildHomeScreen() {
-    return HomePage();
-  }
-
-  /// Placeholder screens for other categories
-  Widget _buildCategoryScreen() {
-    return const CategoriesPage();
-  }
-
-  Widget _buildOffersScreen() {
-    return const OffersPage();
-  }
-
-  Widget _buildAccountScreen() {
-    return const ProfileScreen();
-  }
-}
-
-class HomePage extends HookConsumerWidget {
-  const HomePage({super.key});
+  const CategoryDetailPage({
+    super.key,
+    required this.category,
+    required this.imagePaths,
+    required this.backgroundColor,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categories = ref.watch(categoriesProvider);
-    final allImages = categories.values.expand((category) => category['images'] as List<String>).toList();
-
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       body: CustomScrollView(
         slivers: [
-          // Header Section
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          SliverAppBar(
+            expandedHeight: 220.0,
+            floating: false,
+            pinned: true,
+            elevation: 4,
+            backgroundColor: backgroundColor,
+            flexibleSpace: FlexibleSpaceBar(
+              titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
+              title: Text(
+                '$category Collection',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20,
+                  shadows: [Shadow(color: Colors.black26, blurRadius: 4)],
+                ),
+              ),
+              background: Stack(
+                fit: StackFit.expand,
                 children: [
-                  Text(
-                    "Featured Collections",
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "Discover styles curated for you",
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 14,
+                  imagePaths.isNotEmpty
+                      ? Image.asset(
+                          imagePaths[0],
+                          fit: BoxFit.cover,
+                          color: Colors.black.withOpacity(0.1),
+                          colorBlendMode: BlendMode.darken,
+                        )
+                      : Container(color: backgroundColor),
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black.withOpacity(0.8),
+                        ],
+                        stops: const [0.5, 1.0],
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.favorite_border, color: Colors.white),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: const Icon(Icons.filter_list, color: Colors.white),
+                onPressed: () {},
+              ),
+            ],
           ),
-
-          // Products using Wrap for better responsiveness
           SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Wrap(
-                spacing: 16, // horizontal spacing
-                runSpacing: 16, // vertical spacing
-                children: List.generate(
-                  allImages.length,
-                  (index) {
-                    final imagePath = allImages[index];
-                    final categoryName = categories.entries.firstWhere((entry) => (entry.value['images'] as List<String>).contains(imagePath)).key;
-
-                    // Calculate width based on screen size
-                    final screenWidth = MediaQuery.of(context).size.width;
-                    // Adjust number of items per row based on screen width
-                    final itemsPerRow = screenWidth > 600 ? 3 : 2;
-                    final itemWidth = (screenWidth - (32 + (16 * (itemsPerRow - 1)))) / itemsPerRow;
-
-                    return SizedBox(
-                      width: itemWidth,
-                      child: _buildEnhancedProductCard(
-                        context,
-                        '$categoryName ${index + 1}',
-                        '₹${999 - (index * 50)}',
-                        imagePath,
-                        index % 3 == 0,
-                      ),
-                    );
-                  },
-                ),
+            child: Container(
+              height: 60,
+              margin: const EdgeInsets.symmetric(vertical: 12),
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                scrollDirection: Axis.horizontal,
+                children: [
+                  _buildFilterChip("All Items", true),
+                  const SizedBox(width: 8),
+                  _buildFilterChip("New Arrivals", false),
+                  const SizedBox(width: 8),
+                  _buildFilterChip("Bestsellers", false),
+                  const SizedBox(width: 8),
+                  _buildFilterChip("Price: Low to High", false),
+                  const SizedBox(width: 8),
+                  _buildFilterChip("Price: High to Low", false),
+                ],
               ),
             ),
           ),
-
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 24),
+          // Wrap layout version
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Wrap(
+                spacing: 16,
+                runSpacing: 16,
+                alignment: WrapAlignment.start,
+                children: List.generate(
+                  imagePaths.length,
+                  (index) => SizedBox(
+                    width: (MediaQuery.of(context).size.width - 48) / 2,
+                    child: _buildEnhancedProductCard(
+                      context,
+                      '$category ${index + 1}',
+                      '₹${999 - index * 50}',
+                      imagePaths[index % imagePaths.length],
+                      index % 3 == 0,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -190,6 +127,29 @@ class HomePage extends HookConsumerWidget {
         child: const Icon(
           Icons.shopping_cart,
           color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFilterChip(String label, bool isSelected) {
+    return Container(
+      margin: const EdgeInsets.only(right: 8),
+      child: FilterChip(
+        label: Text(label),
+        selected: isSelected,
+        onSelected: (bool value) {},
+        backgroundColor: Colors.white,
+        selectedColor: Colors.pink[50],
+        labelStyle: TextStyle(
+          color: isSelected ? Colors.pink : Colors.black87,
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(
+            color: isSelected ? Colors.pink : Colors.grey[300]!,
+          ),
         ),
       ),
     );
