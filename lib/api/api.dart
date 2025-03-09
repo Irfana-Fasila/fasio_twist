@@ -1,5 +1,6 @@
 class ApiEndpoints {
-  static const String baseUrl = 'http://localhost:3000'; // Windows
+  static const String baseUrl = 'https://insights-backend-d04s.onrender.com'; // live
+  // static const String baseUrl = 'http://localhost:3000'; // Windows
   // static const String baseUrl = 'http://localhost:3000'; // Windows
 
   // static const String baseUrl = 'http://127.0.0.1:3000';  //chrome
