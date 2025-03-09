@@ -120,24 +120,22 @@ class HomePage extends HookConsumerWidget {
           // Header Section
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "Featured Collections",
-                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Colors.black87,
                         ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "Explore styles tailored just for you",
+                    "Discover styles curated for you",
                     style: TextStyle(
-                      color: Colors.grey[700],
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
+                      color: Colors.grey[600],
+                      fontSize: 14,
                     ),
                   ),
                 ],
@@ -145,20 +143,27 @@ class HomePage extends HookConsumerWidget {
             ),
           ),
 
-          // Products Wrap Section
+          // Products using Wrap for better responsiveness
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Wrap(
-                spacing: 16.0, // Horizontal spacing between items
-                runSpacing: 16.0, // Vertical spacing between rows
+                spacing: 16, // horizontal spacing
+                runSpacing: 16, // vertical spacing
                 children: List.generate(
                   allImages.length,
                   (index) {
                     final imagePath = allImages[index];
                     final categoryName = categories.entries.firstWhere((entry) => (entry.value['images'] as List<String>).contains(imagePath)).key;
+
+                    // Calculate width based on screen size
+                    final screenWidth = MediaQuery.of(context).size.width;
+                    // Adjust number of items per row based on screen width
+                    final itemsPerRow = screenWidth > 600 ? 3 : 2;
+                    final itemWidth = (screenWidth - (32 + (16 * (itemsPerRow - 1)))) / itemsPerRow;
+
                     return SizedBox(
-                      width: (MediaQuery.of(context).size.width - 48) / 2, // Adjust width for 2 columns with padding
+                      width: itemWidth,
                       child: _buildEnhancedProductCard(
                         context,
                         '$categoryName ${index + 1}',
@@ -174,15 +179,14 @@ class HomePage extends HookConsumerWidget {
           ),
 
           const SliverToBoxAdapter(
-            child: SizedBox(height: 32),
+            child: SizedBox(height: 24),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         backgroundColor: Theme.of(context).primaryColor,
-        elevation: 4,
-        child: const Icon(Icons.shopping_cart, color: Colors.white),
+        child: const Icon(Icons.shopping_cart),
       ),
     );
   }
@@ -195,9 +199,9 @@ class HomePage extends HookConsumerWidget {
     bool isNew,
   ) {
     return Card(
-      elevation: 4,
+      elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,7 +210,7 @@ class HomePage extends HookConsumerWidget {
             children: [
               ClipRRect(
                 borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(16),
+                  top: Radius.circular(12),
                 ),
                 child: AspectRatio(
                   aspectRatio: 1,
@@ -219,52 +223,44 @@ class HomePage extends HookConsumerWidget {
               ),
               if (isNew)
                 Positioned(
-                  top: 12,
-                  left: 12,
+                  top: 8,
+                  left: 8,
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8,
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.pinkAccent,
-                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.pink,
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Text(
                       "NEW",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 12,
+                        fontSize: 10,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                 ),
               Positioned(
-                top: 12,
-                right: 12,
+                top: 8,
+                right: 8,
                 child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.9),
                     shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
                   ),
                   child: IconButton(
                     icon: const Icon(
                       Icons.favorite_border,
-                      size: 20,
-                      color: Colors.black54,
+                      size: 18,
                     ),
                     onPressed: () {},
                     constraints: const BoxConstraints(
-                      minHeight: 36,
-                      minWidth: 36,
+                      minHeight: 32,
+                      minWidth: 32,
                     ),
                     padding: EdgeInsets.zero,
                   ),
@@ -280,35 +276,34 @@ class HomePage extends HookConsumerWidget {
                 Text(
                   productName,
                   style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 4),
                 Row(
                   children: [
                     ...List.generate(
                       5,
                       (index) => Icon(
                         index < 4 ? Icons.star : Icons.star_border,
-                        size: 16,
+                        size: 14,
                         color: Colors.amber,
                       ),
                     ),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: 4),
                     Text(
                       "4.0",
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         color: Colors.grey[600],
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -317,24 +312,24 @@ class HomePage extends HookConsumerWidget {
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: 16,
                       ),
                     ),
                     Container(
                       decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       child: IconButton(
                         icon: Icon(
                           Icons.add_shopping_cart,
-                          size: 20,
+                          size: 18,
                           color: Theme.of(context).primaryColor,
                         ),
                         onPressed: () {},
                         constraints: const BoxConstraints(
-                          minHeight: 36,
-                          minWidth: 36,
+                          minHeight: 32,
+                          minWidth: 32,
                         ),
                         padding: EdgeInsets.zero,
                       ),

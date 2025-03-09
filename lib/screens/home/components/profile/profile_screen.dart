@@ -61,12 +61,21 @@ class ProfileScreen extends ConsumerWidget {
         'items': 4,
       },
     ];
+
+    final theme = Theme.of(context);
+    final primaryColor = theme.primaryColor;
+    final accentColor = theme.colorScheme.secondary;
+
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       body: CustomScrollView(
         slivers: [
+          // Beautiful gradient app bar with profile image
           SliverAppBar(
-            expandedHeight: 210.0,
+            expandedHeight: 260.0,
             pinned: true,
+            backgroundColor: primaryColor,
+            elevation: 0,
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 decoration: BoxDecoration(
@@ -74,166 +83,187 @@ class ProfileScreen extends ConsumerWidget {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      Theme.of(context).primaryColor,
-                      Theme.of(context).primaryColor.withOpacity(0.7),
+                      primaryColor,
+                      accentColor,
                     ],
                   ),
                 ),
                 child: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          radius: 40,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Profile image with border
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 3),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 10,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                        ),
+                        child: CircleAvatar(
+                          radius: 50,
                           backgroundImage: AssetImage(userData['profileImage']),
                         ),
-                        const SizedBox(height: 12),
-                        Text(
-                          ref.watch(authVM).name,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      ),
+                      const SizedBox(height: 16),
+                      // User details with animations
+                      Text(
+                        ref.watch(authVM).name,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.5,
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          ref.watch(authVM).email,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                          ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        ref.watch(authVM).email,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w300,
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          "Age : ${ref.watch(authVM).age}",
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                          ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        "Age: ${ref.watch(authVM).age}",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w300,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
               titlePadding: const EdgeInsets.all(0),
             ),
           ),
+
+          // Stats section
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  _buildStatCard(
-                    context,
-                    Icons.shopping_bag,
-                    userData['orderCount'].toString(),
-                    'Orders',
-                    Colors.blue.shade50,
+              padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
+              child: Card(
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildStatItem(context, 'Orders', userData['orderCount'].toString()),
+                      _verticalDivider(),
+                      _buildStatItem(context, 'Wishlist', userData['wishlistCount'].toString()),
+                      _verticalDivider(),
+                      _buildStatItem(context, 'Points', userData['loyaltyPoints'].toString()),
+                    ],
                   ),
-                  const SizedBox(width: 16),
-                  _buildStatCard(
-                    context,
-                    Icons.favorite,
-                    userData['wishlistCount'].toString(),
-                    'Wishlist',
-                    Colors.red.shade50,
-                  ),
-                  const SizedBox(width: 16),
-                  _buildStatCard(
-                    context,
-                    Icons.diamond,
-                    userData['loyaltyPoints'].toString(),
-                    'Points',
-                    Colors.amber.shade50,
-                  ),
-                ],
+                ),
               ),
             ),
           ),
-          SliverToBoxAdapter(
-            child: _buildSectionTitle(context, 'Account Information'),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              child: Column(
-                children: [
-                  _buildInfoCard(
-                    context,
-                    Icons.phone_android,
-                    'Phone',
-                    userData['phone'],
-                    () {},
-                  ),
-                  const SizedBox(height: 12),
-                  _buildInfoCard(
-                    context,
-                    Icons.calendar_today,
-                    'Member Since',
-                    userData['memberSince'],
-                    () {},
-                  ),
-                  const SizedBox(height: 12),
-                  _buildInfoCard(
-                    context,
-                    Icons.location_on,
-                    'Delivery Address',
-                    userData['address'],
-                    () {},
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: _buildSectionTitle(context, 'Payment Methods'),
-          ),
+
+          // Recent orders section
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              child: Column(
-                children: userData['paymentMethods'].map<Widget>((method) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: _buildPaymentMethodCard(
-                      context,
-                      method['type'],
-                      method['number'],
-                      method['isDefault'],
-                    ),
-                  );
-                }).toList(),
-              ),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              child: _buildSectionHeader(context, 'Recent Orders'),
             ),
           ),
-          SliverToBoxAdapter(
-            child: _buildSectionTitle(context, 'Recent Orders'),
-          ),
+
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
+                final order = recentOrders[index];
                 return Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-                  child: _buildOrderCard(context, recentOrders[index]),
+                  padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+                  child: Card(
+                    elevation: 1,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      leading: CircleAvatar(
+                        backgroundColor: order['statusColor'].withOpacity(0.1),
+                        child: Text(
+                          order['items'].toString(),
+                          style: TextStyle(
+                            color: order['statusColor'],
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      title: Row(
+                        children: [
+                          Text(
+                            order['id'],
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: order['statusColor'].withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              order['status'],
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: order['statusColor'],
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(
+                          "${order['date']} • ${order['amount']}",
+                        ),
+                      ),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () {},
+                    ),
+                  ),
                 );
               },
               childCount: recentOrders.length,
             ),
           ),
+
+          // Action buttons section
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  _buildSectionHeader(context, 'Account'),
+                  const SizedBox(height: 16),
                   _buildActionButton(
                     context,
                     'View All Orders',
                     Icons.receipt_long,
                     () {},
+                    gradient: LinearGradient(
+                      colors: [primaryColor, accentColor],
+                    ),
                   ),
                   const SizedBox(height: 12),
                   _buildActionButton(
@@ -267,237 +297,46 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildStatCard(
-    BuildContext context,
-    IconData icon,
-    String value,
-    String label,
-    Color backgroundColor,
-  ) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          children: [
-            Icon(icon, color: Theme.of(context).primaryColor),
-            const SizedBox(height: 8),
-            Text(
-              value,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-            Text(
-              label,
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 12,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSectionTitle(BuildContext context, String title) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+  Widget _buildStatItem(BuildContext context, String label, String value) {
+    return Column(
+      children: [
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).primaryColor,
           ),
-          const SizedBox(height: 4),
-          const Divider(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInfoCard(
-    BuildContext context,
-    IconData icon,
-    String label,
-    String value,
-    VoidCallback onTap,
-  ) {
-    return Card(
-      elevation: 1,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: ListTile(
-        leading: Icon(icon, color: Theme.of(context).primaryColor),
-        title: Text(
+        ),
+        const SizedBox(height: 4),
+        Text(
           label,
           style: TextStyle(
             fontSize: 14,
             color: Colors.grey[600],
           ),
         ),
-        subtitle: Text(
-          value,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-        onTap: onTap,
-      ),
+      ],
     );
   }
 
-  Widget _buildPaymentMethodCard(
-    BuildContext context,
-    String type,
-    String number,
-    bool isDefault,
-  ) {
-    IconData icon;
-    if (type == 'Credit Card') {
-      icon = Icons.credit_card;
-    } else if (type == 'UPI') {
-      icon = Icons.account_balance;
-    } else {
-      icon = Icons.payment;
-    }
-
-    return Card(
-      elevation: 1,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: ListTile(
-        leading: Icon(icon, color: Theme.of(context).primaryColor),
-        title: Row(
-          children: [
-            Text(type),
-            if (isDefault)
-              Container(
-                margin: const EdgeInsets.only(left: 8),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 2,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.green.shade100,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Text(
-                  'DEFAULT',
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: Colors.green,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-          ],
-        ),
-        subtitle: Text(number),
-        trailing: IconButton(
-          icon: const Icon(Icons.edit_outlined, size: 20),
-          onPressed: () {},
-        ),
-      ),
+  Widget _verticalDivider() {
+    return Container(
+      height: 40,
+      width: 1,
+      color: Colors.grey[300],
     );
   }
 
-  Widget _buildOrderCard(
-    BuildContext context,
-    Map<String, dynamic> order,
-  ) {
-    return Card(
-      elevation: 1,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Order #${order['id']}',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                Text(
-                  order['date'],
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '${order['items']} items',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[600],
-                  ),
-                ),
-                Text(
-                  order['amount'],
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 10,
-                      height: 10,
-                      decoration: BoxDecoration(
-                        color: order['statusColor'],
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      order['status'],
-                      style: TextStyle(
-                        color: order['statusColor'],
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: const Text('View Details'),
-                ),
-              ],
-            ),
-          ],
+  Widget _buildSectionHeader(BuildContext context, String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Theme.of(context).primaryColor,
         ),
       ),
     );
@@ -511,25 +350,105 @@ class ProfileScreen extends ConsumerWidget {
     bool isOutlined = false,
     Color? textColor,
     Color? borderColor,
+    LinearGradient? gradient,
   }) {
-    return SizedBox(
+    return Container(
       width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        gradient: !isOutlined ? gradient : null,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: !isOutlined
+            ? [
+                BoxShadow(
+                  color: Theme.of(context).primaryColor.withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                )
+              ]
+            : null,
+      ),
       child: ElevatedButton.icon(
-        onPressed: onTap,
+        onPressed: () {
+          if (label == 'Sign Out') {
+            // Show confirmation dialog for logout
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  title: Text(
+                    'Sign Out',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  content: Text(
+                    'Are you sure you want to sign out of your account?',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(); // Close the dialog
+                      },
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                          color: Colors.grey[700],
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(); // Close the dialog
+                        onTap(); // Execute the logout function
+                      },
+                      child: Text(
+                        'Sign Out',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
+          } else {
+            onTap();
+          }
+        },
         icon: Icon(icon),
-        label: Text(label),
+        label: Text(
+          label,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         style: ElevatedButton.styleFrom(
           foregroundColor: isOutlined ? textColor ?? Theme.of(context).primaryColor : Colors.white,
-          backgroundColor: isOutlined ? Colors.transparent : Theme.of(context).primaryColor,
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          backgroundColor: isOutlined ? Colors.transparent : null,
+          elevation: isOutlined ? 0 : null,
+          padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(12),
             side: isOutlined
                 ? BorderSide(
                     color: borderColor ?? Theme.of(context).primaryColor,
+                    width: 2,
                   )
                 : BorderSide.none,
           ),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          shadowColor: Colors.transparent,
         ),
       ),
     );

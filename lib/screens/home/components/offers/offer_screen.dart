@@ -8,7 +8,6 @@ class OffersPage extends StatefulWidget {
 }
 
 class _OffersPageState extends State<OffersPage> {
-  // Sample offers data
   final List<OfferModel> offers = [
     OfferModel(
       id: 1,
@@ -55,8 +54,7 @@ class _OffersPageState extends State<OffersPage> {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
-      slivers: <Widget>[
-        // Featured offer banner
+      slivers: [
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -67,6 +65,7 @@ class _OffersPageState extends State<OffersPage> {
                   "Exclusive Offers",
                   style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                         fontWeight: FontWeight.bold,
+                        color: Colors.black87,
                       ),
                 ),
                 const SizedBox(height: 8),
@@ -82,53 +81,47 @@ class _OffersPageState extends State<OffersPage> {
             ),
           ),
         ),
-
-        // Upcoming deals section
         SliverToBoxAdapter(
           child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Current Promotions",
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Current Promotions",
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text("View All"),
+                    ),
+                  ],
                 ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "View All",
-                    style: TextStyle(color: Theme.of(context).primaryColor),
-                  ),
+                const SizedBox(height: 16),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    double itemWidth = (constraints.maxWidth - 16) / 2; // Two items per row with spacing
+                    return Wrap(
+                      spacing: 16,
+                      runSpacing: 16,
+                      children: offers
+                          .map((offer) => SizedBox(
+                                width: itemWidth,
+                                child: _buildOfferCard(offer),
+                              ))
+                          .toList(),
+                    );
+                  },
                 ),
               ],
             ),
           ),
         ),
-
-        // Offer cards grid
-        SliverPadding(
-          padding: const EdgeInsets.all(16.0),
-          sliver: SliverGrid(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.8,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-            ),
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return _buildOfferCard(offers[index]);
-              },
-              childCount: offers.length,
-            ),
-          ),
-        ),
-
-        // Recommended section
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -137,7 +130,7 @@ class _OffersPageState extends State<OffersPage> {
               children: [
                 Text(
                   "Recommended For You",
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                 ),
@@ -153,47 +146,30 @@ class _OffersPageState extends State<OffersPage> {
 
   Widget _buildFeaturedOffer() {
     return Container(
-      height: 180,
+      height: 200,
       width: double.infinity,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFF6A1B9A), Color(0xFF9C27B0)],
+          colors: [Color(0xFF8E2DE2), Color(0xFF4A00E0)],
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.purple.withOpacity(0.3),
-            spreadRadius: 1,
-            blurRadius: 8,
-            offset: const Offset(0, 3),
-          ),
-        ],
       ),
       child: Stack(
         children: [
-          Positioned(
-            right: -20,
-            bottom: -20,
+          Positioned.fill(
             child: Container(
-              width: 150,
-              height: 150,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-          Positioned(
-            left: -30,
-            top: -30,
-            child: Container(
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.1),
-                shape: BoxShape.circle,
+                borderRadius: BorderRadius.circular(16),
+                gradient: RadialGradient(
+                  center: Alignment.topRight,
+                  radius: 1.5,
+                  colors: [
+                    Colors.white.withOpacity(0.1),
+                    Colors.transparent,
+                  ],
+                ),
               ),
             ),
           ),
@@ -201,54 +177,49 @@ class _OffersPageState extends State<OffersPage> {
             padding: const EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.white.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Text(
-                    "SPECIAL OFFER",
+                  child: const Text(
+                    "LIMITED TIME",
                     style: TextStyle(
-                      color: Theme.of(context).primaryColor,
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 12,
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 Text(
                   "30% OFF",
-                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                 ),
                 Text(
-                  "On all premium collections",
+                  "Premium Collections",
                   style: TextStyle(
                     color: Colors.white.withOpacity(0.9),
                     fontSize: 16,
                   ),
                 ),
-                const Spacer(),
+                const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
-                    foregroundColor: Theme.of(context).primaryColor,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 24, vertical: 12),
+                    foregroundColor: const Color(0xFF4A00E0),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                  child: const Text(
-                    "Shop Now",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
+                  child: const Text("Shop Now"),
                 ),
               ],
             ),
@@ -261,13 +232,13 @@ class _OffersPageState extends State<OffersPage> {
   Widget _buildOfferCard(OfferModel offer) {
     return Container(
       decoration: BoxDecoration(
-        color: offer.backgroundColor,
-        borderRadius: BorderRadius.circular(12),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
             spreadRadius: 1,
-            blurRadius: 4,
+            blurRadius: 6,
             offset: const Offset(0, 2),
           ),
         ],
@@ -275,21 +246,22 @@ class _OffersPageState extends State<OffersPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Image placeholder or actual image
           Container(
-            height: 100,
+            height: 120,
             decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.3),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(12),
-                topRight: Radius.circular(12),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              gradient: LinearGradient(
+                colors: [
+                  offer.backgroundColor.withOpacity(0.8),
+                  offer.backgroundColor,
+                ],
               ),
             ),
             child: Center(
               child: Text(
                 offer.discount,
                 style: const TextStyle(
-                  fontSize: 28,
+                  fontSize: 32,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -297,15 +269,15 @@ class _OffersPageState extends State<OffersPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   offer.title,
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
                     fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -315,39 +287,38 @@ class _OffersPageState extends State<OffersPage> {
                   offer.description,
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey[700],
+                    color: Colors.grey[600],
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 8),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey.withOpacity(0.5),
-                        ),
-                        borderRadius: BorderRadius.circular(4),
+                        color: Colors.grey[100],
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
                         offer.code,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: const TextStyle(fontSize: 12),
                       ),
                     ),
-                    const Spacer(),
-                    InkWell(
+                    GestureDetector(
                       onTap: () {},
-                      child: const Icon(
-                        Icons.content_copy,
-                        size: 16,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: offer.backgroundColor.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Icon(
+                          Icons.content_copy,
+                          size: 16,
+                        ),
                       ),
                     ),
                   ],
@@ -362,16 +333,17 @@ class _OffersPageState extends State<OffersPage> {
 
   Widget _buildRecommendedOffer() {
     return Container(
-      width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFF3E0),
-        borderRadius: BorderRadius.circular(12),
+        gradient: const LinearGradient(
+          colors: [Color(0xFFFF6B6B), Color(0xFFFF8E8E)],
+        ),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.orange.withOpacity(0.1),
+            color: Colors.red.withOpacity(0.2),
             spreadRadius: 1,
-            blurRadius: 4,
+            blurRadius: 6,
             offset: const Offset(0, 2),
           ),
         ],
@@ -383,53 +355,51 @@ class _OffersPageState extends State<OffersPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.orange,
-                    borderRadius: BorderRadius.circular(4),
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Text(
-                    "EXCLUSIVE",
+                    "HOT DEAL",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 10,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 const Text(
-                  "Weekend Flash Sale",
+                  "Weekend Special",
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Up to 70% off on weekend special items",
+                  "Up to 70% off selected items",
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.grey[700],
+                    color: Colors.white.withOpacity(0.9),
                   ),
                 ),
                 const SizedBox(height: 12),
                 Row(
                   children: [
                     Icon(
-                      Icons.access_time,
-                      size: 14,
-                      color: Colors.grey[600],
+                      Icons.timer,
+                      size: 16,
+                      color: Colors.white.withOpacity(0.8),
                     ),
                     const SizedBox(width: 4),
                     Text(
                       "Ends in 2 days",
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey[600],
+                        color: Colors.white.withOpacity(0.8),
                       ),
                     ),
                   ],
@@ -440,8 +410,8 @@ class _OffersPageState extends State<OffersPage> {
           Container(
             width: 80,
             height: 80,
-            decoration: const BoxDecoration(
-              color: Colors.orange,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
               shape: BoxShape.circle,
             ),
             child: const Center(
@@ -450,6 +420,7 @@ class _OffersPageState extends State<OffersPage> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
