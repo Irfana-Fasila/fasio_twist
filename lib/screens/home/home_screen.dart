@@ -1,3 +1,4 @@
+import 'package:fasio_twist/screens/home/components/categories/category_filteration.dart';
 import 'package:fasio_twist/screens/home/components/categories/category_section.dart';
 import 'package:fasio_twist/screens/home/components/offers/offer_screen.dart';
 import 'package:fasio_twist/screens/home/components/profile/profile_screen.dart';
