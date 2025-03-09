@@ -1,4 +1,4 @@
-import 'package:fasio_twist/screens/home/components/categories/category_filteration.dart';
+import 'package:fasio_twist/screens/home/components/categories/category_filtration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
