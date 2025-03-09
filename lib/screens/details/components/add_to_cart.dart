@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../constants.dart';
-import '../../../models/product.dart';
+import '../../../model/product.dart';
 
 class AddToCart extends StatelessWidget {
   const AddToCart({super.key, required this.product});
@@ -37,8 +37,7 @@ class AddToCart extends StatelessWidget {
               onPressed: () {},
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 48),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
                 backgroundColor: product.color,
               ),
               child: Text(

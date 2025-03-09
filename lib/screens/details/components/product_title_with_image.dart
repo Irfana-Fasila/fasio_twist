@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
-import '../../../models/product.dart';
+import '../../../model/product.dart';
 
 class ProductTitleWithImage extends StatelessWidget {
   const ProductTitleWithImage({super.key, required this.product});
@@ -20,10 +20,7 @@ class ProductTitleWithImage extends StatelessWidget {
           ),
           Text(
             product.title,
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge!
-                .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: kDefaultPaddin),
           Row(
@@ -34,11 +31,7 @@ class ProductTitleWithImage extends StatelessWidget {
                     const TextSpan(text: "Price\n"),
                     TextSpan(
                       text: "\$${product.price}",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall!
-                          .copyWith(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),

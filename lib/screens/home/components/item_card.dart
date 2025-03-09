@@ -1,7 +1,7 @@
+import 'package:fasio_twist/model/product.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
-import '../../../models/product.dart';
 
 class ItemCard extends StatelessWidget {
   const ItemCard({super.key, required this.product, required this.press});
