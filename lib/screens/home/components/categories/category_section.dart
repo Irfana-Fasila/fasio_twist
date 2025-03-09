@@ -383,7 +383,7 @@ class CategoriesPage extends ConsumerWidget {
 
 class CategoryDetailPage extends ConsumerWidget {
   final String category;
-  final List<String> imagePaths;
+  final List imagePaths;
   final Color backgroundColor;
 
   const CategoryDetailPage({
@@ -396,21 +396,24 @@ class CategoryDetailPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Colors.grey[100],
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 200.0,
+            expandedHeight: 220.0,
             floating: false,
             pinned: true,
+            elevation: 4,
             backgroundColor: backgroundColor,
             flexibleSpace: FlexibleSpaceBar(
+              titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
               title: Text(
                 '$category Collection',
                 style: const TextStyle(
                   color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20,
+                  shadows: [Shadow(color: Colors.black26, blurRadius: 4)],
                 ),
               ),
               background: Stack(
@@ -420,6 +423,8 @@ class CategoryDetailPage extends ConsumerWidget {
                       ? Image.asset(
                           imagePaths[0],
                           fit: BoxFit.cover,
+                          color: Colors.black.withOpacity(0.1),
+                          colorBlendMode: BlendMode.darken,
                         )
                       : Container(color: backgroundColor),
                   Container(
@@ -429,9 +434,9 @@ class CategoryDetailPage extends ConsumerWidget {
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          Colors.black.withOpacity(0.7),
+                          Colors.black.withOpacity(0.8),
                         ],
-                        stops: const [0.6, 1.0],
+                        stops: const [0.5, 1.0],
                       ),
                     ),
                   ),
@@ -440,59 +445,68 @@ class CategoryDetailPage extends ConsumerWidget {
             ),
             actions: [
               IconButton(
-                icon: const Icon(Icons.favorite_border),
+                icon: const Icon(Icons.favorite_border, color: Colors.white),
                 onPressed: () {},
               ),
               IconButton(
-                icon: const Icon(Icons.filter_list),
+                icon: const Icon(Icons.filter_list, color: Colors.white),
                 onPressed: () {},
               ),
             ],
           ),
           SliverToBoxAdapter(
             child: Container(
-              height: 50,
-              margin: const EdgeInsets.only(top: 8),
+              height: 60,
+              margin: const EdgeInsets.symmetric(vertical: 12),
               child: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 scrollDirection: Axis.horizontal,
                 children: [
                   _buildFilterChip("All Items", true),
+                  const SizedBox(width: 8),
                   _buildFilterChip("New Arrivals", false),
+                  const SizedBox(width: 8),
                   _buildFilterChip("Bestsellers", false),
+                  const SizedBox(width: 8),
                   _buildFilterChip("Price: Low to High", false),
+                  const SizedBox(width: 8),
                   _buildFilterChip("Price: High to Low", false),
                 ],
               ),
             ),
           ),
-          SliverPadding(
-            padding: const EdgeInsets.all(16.0),
-            sliver: SliverGrid(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.7,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-              ),
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => _buildEnhancedProductCard(
-                  context,
-                  '$category ${index + 1}',
-                  '₹${999 - index * 50}',
-                  imagePaths[index % imagePaths.length],
-                  index % 3 == 0,
+          // Wrap layout version
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Wrap(
+                spacing: 16,
+                runSpacing: 16,
+                alignment: WrapAlignment.start,
+                children: List.generate(
+                  imagePaths.length,
+                  (index) => SizedBox(
+                    width: (MediaQuery.of(context).size.width - 48) / 2,
+                    child: _buildEnhancedProductCard(
+                      context,
+                      '$category ${index + 1}',
+                      '₹${999 - index * 50}',
+                      imagePaths[index % imagePaths.length],
+                      index % 3 == 0,
+                    ),
+                  ),
                 ),
-                childCount: imagePaths.length,
               ),
             ),
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {},
         backgroundColor: Theme.of(context).primaryColor,
-        child: const Icon(Icons.shopping_cart),
+        icon: const Icon(Icons.shopping_cart),
+        label: const Text('Cart'),
+        elevation: 6,
       ),
     );
   }
